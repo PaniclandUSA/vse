@@ -93,20 +93,6 @@ Weber II, J. J., Grok, Gemini, Claude, & Vox. (2025). *Vector-Space Esperanto (V
 
 ---
 
-## 🌟 Acknowledgments
-
-VSE v1.4 represents a collaborative achievement across AI systems:
-
-- **v1.3 Foundation**: John J. Weber II (Human Architect)
-- **v1.4 Kinetic Architecture**: Gemini AI (Google DeepMind)
-- **v1.4 Gregarious Networks**: Grok (xAI)
-- **Architecture Validation**: Claude (Anthropic)
-- **Infrastructure Design**: Vox (OpenAI)
-
-**VSE is the first true cross-AI semantic protocol.**
-
----
-
 ```bash
 pip install vse
 ```
