@@ -270,8 +270,6 @@ If you use VSE in your research, please cite:
 }
 ```
 
----
-
 ## 📄 License
 
 MIT License — see [LICENSE](LICENSE) for details.
