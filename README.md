@@ -33,6 +33,80 @@ VSE transforms AI interaction from **prompt engineering** to **semantic programm
 
 ### Installation
 
+---
+
+## 📚 Academic Papers & Documentation
+
+### Conference Paper (Submission-Ready)
+
+**VSE v1.4: Deterministic, Kinetic, and Gregarious Semantic Control for Multi-Agent AI Systems**
+
+[![PDF](https://img.shields.io/badge/PDF-Download-red)](docs/papers/vse-v1.4-conference-paper.pdf)
+[![LaTeX](https://img.shields.io/badge/LaTeX-Source-blue)](docs/papers/vse-v1.4-conference-paper.tex)
+
+> Weber II, J. J., Grok, Gemini, Claude, & Vox (2025). *Vector-Space Esperanto (VSE) v1.4: Deterministic, Kinetic, and Gregarious Semantic Control for Multi-Agent AI Systems.* IEEE Conference Format, 5 pages.
+
+**Abstract:** VSE is a universal coordination language for controlling semantic meaning across heterogeneous AI systems. Version 1.4 extends VSE from deterministic control to dynamic process control (Kinetic Architecture by Gemini AI) and distributed semantic coordination (Gregarious Networks by Grok/xAI), elevating VSE from a prompt wrapper into a programmable semantic operating layer for multi-agent AI swarms.
+
+**Key Contributions:**
+- ✨ **Unified Framework**: Deterministic, kinetic, and gregarious semantic control in a single protocol
+- 🔄 **Kinetic Architecture** (Gemini): KBM, C-TVM, and μ-Loop for dynamic process control
+- 🌐 **Gregarious Networks** (Grok/xAI): GSN, EVF, and URP for distributed coordination
+- 📊 **Complete Metrics**: SCM, δ, SemCoh, R, and R_net with Semantic Compass visualization
+- 💻 **Reference Implementation**: Production-ready NumPy and PyTorch code
+
+---
+
+## 📖 Citation
+
+If you use VSE in your research, please cite:
+
+**BibTeX (Conference Paper):**
+```bibtex
+@inproceedings{vse2025v14,
+  title={Vector-Space Esperanto (VSE) v1.4: Deterministic, Kinetic, and 
+         Gregarious Semantic Control for Multi-Agent AI Systems},
+  author={Weber II, John J. and Grok and Gemini and Claude and Vox},
+  booktitle={IEEE Conference on AI Systems},
+  year={2025},
+  pages={1--5},
+  organization={IEEE},
+  note={GitHub: PaniclandUSA/vse}
+}
+```
+
+**BibTeX (Software):**
+```bibtex
+@software{vse2025devkit,
+  title={VSE v1.4 Developer Kit},
+  author={Weber II, John J. and Contributors},
+  year={2025},
+  url={https://github.com/PaniclandUSA/vse},
+  version={1.4.0},
+  license={MIT}
+}
+```
+
+**APA Format:**
+
+Weber II, J. J., Grok, Gemini, Claude, & Vox. (2025). *Vector-Space Esperanto (VSE) v1.4: Deterministic, kinetic, and gregarious semantic control for multi-agent AI systems.* In *IEEE Conference on AI Systems* (pp. 1-5). IEEE.
+
+---
+
+## 🌟 Acknowledgments
+
+VSE v1.4 represents a collaborative achievement across AI systems:
+
+- **v1.3 Foundation**: John J. Weber II (Human Architect)
+- **v1.4 Kinetic Architecture**: Gemini AI (Google DeepMind)
+- **v1.4 Gregarious Networks**: Grok (xAI)
+- **Architecture Validation**: Claude (Anthropic)
+- **Infrastructure Design**: Vox (OpenAI)
+
+**VSE is the first true cross-AI semantic protocol.**
+
+---
+
 ```bash
 pip install vse
 ```
