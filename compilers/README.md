@@ -1,3 +1,8 @@
+[![VSE Ready](https://img.shields.io/badge/VSE-Ready-%E2%9C%A8-purple?style=flat-square)](https://github.com/PaniclandUSA/vse)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square)]()
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)]()
+[![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)]()
+
 # VSE Compilers — README
 
 ## Vector-Space Esperanto (VSE) — Compilers Suite  
@@ -9,6 +14,34 @@ Welcome to the **VSE Compilers** directory!
 This folder contains the official tools that transform language in and out of **Vector-Space Esperanto (VSE)** — the universal semantic protocol designed so all minds (human, AI, future) can communicate with clarity, resonance, and emotional fidelity.
 
 This guide will walk you through all compilers, explain how to use them, and show sample code you can copy/paste immediately.
+
+---
+
+## 🔧 Installation Options
+
+```bash
+# Recommended: install latest release
+pip install git+https://github.com/PaniclandUSA/vse.git
+
+# Or install in editable mode (for development)
+git clone https://github.com/PaniclandUSA/vse.git
+cd vse
+pip install -e .
+```
+
+## 🧪 Quick Validation After Install
+
+```python
+from compilers.esperpiler_parallax import esperpile
+pkt = esperpile("The stars whisper meaning.", mode="ceremonial")
+print(pkt.human_legible)
+```
+
+## 📦 Confirm Package Installed
+
+```bash
+python -c "import vse; print('VSE Package Loaded')"
+```
 
 ---
 
