@@ -1,23 +1,47 @@
+#!/usr/bin/env python3
+# compilers/esperpiler_v3.1.py
+"""
+Esperpiler Parallax v3.1
+Vector-Space Esperanto → Universal Intent Packet
+Hybrid of VSE 1.9 (scaffolding) + VSE 2.0 (Esperpiler deep semantics)
+
+This version includes:
+- UMAP stability fixes
+- Safe entropy calculation
+- Canonical "eternal now" phrasing
+- Barycenter padding fix
+- Mode smoothed resonance
+- Clean universal signature schema
+"""
+
 import json
 import numpy as np
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional, Tuple
 import warnings
 
+# -------------------------------------------------------
+# Embedding + UMAP imports
+# -------------------------------------------------------
+
 try:
     from sentence_transformers import SentenceTransformer
     _has_st = True
 except Exception:
-    warnings.warn("sentence-transformers not found → falling back to random embeddings (weak)")
+    warnings.warn("sentence-transformers not found → fallback embeddings used.")
     _has_st = False
 
 try:
     import umap
     _has_umap = True
 except Exception:
-    warnings.warn("umap-learn not found → skipping motif reduction")
+    warnings.warn("umap-learn not found → motif reduction disabled.")
     _has_umap = False
 
+
+# -------------------------------------------------------
+# PACKET DATA MODEL
+# -------------------------------------------------------
 
 @dataclass
 class VSEPacket:
@@ -29,20 +53,18 @@ class VSEPacket:
     raw_text_hash: str
 
 
-class VSECompilerV21:
-    """
-    VSECompiler v2.1 — Esperpiler Parallax
-    Hybrid of:
-        • v1.9 universal scaffolding (modes, resonance, model hints)
-        • v2.0 "Esperpiler" deep semantics (embeddings, UMAP motifs, entropy)
-    """
+# -------------------------------------------------------
+# ESPERPILER CLASS (v3.1)
+# -------------------------------------------------------
+
+class VSECompilerV31:
 
     def __init__(
         self,
         motif_dim: int = 12,
         intent_dim: int = 4,
         embedding_model: str = "all-MiniLM-L6-v2",
-        mode: str = "default",  # default, ceremonial, staccato, analytic, wildcard, esoteric
+        mode: str = "default",
         language: str = "en",
         canonical_cov_path: Optional[str] = None,
     ):
@@ -50,9 +72,11 @@ class VSECompilerV21:
         self.intent_dim = intent_dim
         self.mode = mode
         self.language = language
-        self.vse_version = "2.1-esperpiler-parallax"
+        self.vse_version = "2.1-esperpiler-parallax-v3.1"
 
+        # ------------------------------
         # Embedding backbone
+        # ------------------------------
         if _has_st:
             self.embedder = SentenceTransformer(embedding_model)
             self.embedding_dim = self.embedder.get_sentence_embedding_dimension()
@@ -60,10 +84,12 @@ class VSECompilerV21:
             self.embedder = None
             self.embedding_dim = max(self.motif_dim, 384)
 
-        # UMAP reducer (optional)
+        # ------------------------------
+        # UMAP reducer
+        # ------------------------------
         if _has_umap and _has_st:
             self.reducer = umap.UMAP(
-                n_components=motif_dim,
+                n_components=self.motif_dim,
                 metric="cosine",
                 n_neighbors=15,
                 min_dist=0.0,
@@ -74,144 +100,157 @@ class VSECompilerV21:
             self.reducer = None
             self._reducer_fitted = False
 
-        # Canonical covariance for Mahalanobis on intent space
+        # ------------------------------
+        # Canonical covariance
+        # ------------------------------
         self.canonical_cov = np.eye(intent_dim) * 0.8 + 0.2
         if canonical_cov_path:
             try:
                 self.canonical_cov = np.load(canonical_cov_path)
             except Exception:
-                warnings.warn("Could not load canonical_cov; using default.")
+                warnings.warn("Failed loading canonical_cov_path; using default.")
 
     # -------------------------------------------------------
-    # 1. Sentence-level motif extraction (embeddings + reducer)
+    # Sentence Embeddings
     # -------------------------------------------------------
+
     def _embed_sentences(self, sentences: List[str]) -> np.ndarray:
+        """
+        Embeds sentences with Sentence Transformers, falling back
+        to deterministic pseudo-random vectors if needed.
+        """
         if not sentences:
             return np.zeros((1, self.embedding_dim), dtype=float)
 
         if self.embedder is None:
-            # Fallback: random but deterministic-ish based on hash
+            # Deterministic fallback
             embs = []
             for s in sentences:
                 h = hash(s) % (10**6)
                 rng = np.random.RandomState(h)
                 vec = rng.randn(self.embedding_dim)
-                vec /= np.linalg.norm(vec) + 1e-8
+                vec /= np.linalg.norm(vec) + 1e-12
                 embs.append(vec)
             return np.vstack(embs)
 
-        embs = self.embedder.encode(
+        return self.embedder.encode(
             sentences,
             convert_to_numpy=True,
             normalize_embeddings=True,
         )
-        return embs
+
+    # -------------------------------------------------------
+    # Motif extraction
+    # -------------------------------------------------------
 
     def extract_motifs(self, sentences: List[str]) -> np.ndarray:
         embs = self._embed_sentences(sentences)
 
+        # Fit reducer once
         if self.reducer is not None:
-            if not self._reducer_fitted:
-                # Fit once on the fly; in production this should be pre-fitted
-                try:
+            try:
+                if not self._reducer_fitted:
                     self.reducer.fit(embs)
                     self._reducer_fitted = True
-                except Exception:
-                    warnings.warn("UMAP fit failed; falling back to truncation.")
-                    self.reducer = None
+                motifs = self.reducer.transform(embs)
+            except Exception:
+                warnings.warn("UMAP reduction failed; falling back to truncation.")
+                motifs = None
+                self.reducer = None
+                self._reducer_fitted = False
 
-        if self.reducer is not None:
-            motifs = self.reducer.transform(embs)
-        else:
-            # Truncate or pad embedding dimensions to motif_dim
+        if self.reducer is None:
+            # manual truncation/padding
             if embs.shape[1] >= self.motif_dim:
                 motifs = embs[:, : self.motif_dim]
             else:
-                pad_width = self.motif_dim - embs.shape[1]
-                motifs = np.pad(embs, ((0, 0), (0, pad_width)))
+                pad = self.motif_dim - embs.shape[1]
+                motifs = np.pad(embs, ((0, 0), (0, pad)))
 
-        # L2 normalize motifs row-wise
-        norms = np.linalg.norm(motifs, axis=1, keepdims=True) + 1e-8
-        motifs = motifs / norms
+        # Normalize
+        motifs = motifs / (np.linalg.norm(motifs, axis=1, keepdims=True) + 1e-12)
         return motifs
 
     # -------------------------------------------------------
-    # 2. Intent estimation Φ₁–Φ₄ from motif centroid
+    # Intent projection Φ₁–Φ₄
     # -------------------------------------------------------
+
     def estimate_intent(self, motif_centroid: np.ndarray) -> np.ndarray:
-        # Projection matrix W: (intent_dim, 4) for simplicity here
-        W = np.array(
-            [
-                [0.8, -0.6, 0.2, -0.1],
-                [-0.3, -0.4, 0.9, 0.1],
-                [0.7, 0.5, -0.3, 0.2],
-                [-0.2, 0.3, 0.1, 0.9],
-            ],
-            dtype=float,
-        )
+        W = np.array([
+            [0.8, -0.6, 0.2, -0.1],
+            [-0.3, -0.4, 0.9, 0.1],
+            [0.7, 0.5, -0.3, 0.2],
+            [-0.2, 0.3, 0.1, 0.9],
+        ])
 
-        # Use first 4 components of motif centroid for this projection
-        m4 = motif_centroid
-        if m4.size < 4:
-            m4 = np.pad(m4, (0, 4 - m4.size))
-        else:
-            m4 = m4[:4]
+        # use first 4 dims of centroid
+        v = motif_centroid[:4]
+        if v.size < 4:
+            v = np.pad(v, (0, 4 - v.size))
 
-        raw = W @ m4  # (4,)
-        intent = np.tanh(raw)
-        return intent.astype(float)
+        raw = W @ v
+        return np.tanh(raw).astype(float)
 
     # -------------------------------------------------------
-    # 3. Temporal anchor τ — tense-heuristic
+    # Temporal anchor τ
     # -------------------------------------------------------
+
     def estimate_time(self, text: str) -> float:
-        lower = text.lower()
-        past = sum(lower.count(w) for w in ["was", "were", "had", "ago", "yesterday", "before"])
-        future = sum(lower.count(w) for w in ["will", "shall", "tomorrow", "soon", "next", "gonna"])
+        low = text.lower()
+        past = sum(low.count(w) for w in ["was", "were", "had", "ago", "before", "yesterday"])
+        future = sum(low.count(w) for w in ["will", "shall", "tomorrow", "soon", "next"])
         score = future - past
         return float(np.tanh(score * 0.5))
 
     # -------------------------------------------------------
-    # 4. Mahalanobis divergence δ in intent space
+    # Semantic divergence δ
     # -------------------------------------------------------
-    def semantic_divergence(self, signature: np.ndarray) -> float:
+
+    def semantic_divergence(self, intent_vec: np.ndarray) -> float:
         VI = np.linalg.inv(self.canonical_cov)
-        diff = signature - np.zeros(self.intent_dim)
-        delta = float(np.sqrt(diff.T @ VI @ diff))
-        return delta
+        diff = intent_vec - np.zeros(self.intent_dim)
+        return float(np.sqrt(diff.T @ VI @ diff))
 
     # -------------------------------------------------------
-    # 5. Resonance v2 (center + divergence + entropy)
+    # Motif entropy
     # -------------------------------------------------------
-    def compute_motif_entropy(self, motif_matrix: np.ndarray) -> float:
-        """
-        Compute Shannon entropy over each row by treating
-        abs(motif) normalized to a probability distribution.
-        """
-        m = np.abs(motif_matrix)
-        row_sums = m.sum(axis=1, keepdims=True) + 1e-8
+
+    def compute_motif_entropy(self, M: np.ndarray) -> float:
+        m = np.abs(M)
+        row_sums = m.sum(axis=1, keepdims=True) + 1e-12
         p = m / row_sums
-        ent = -np.sum(p * np.log(p + 1e-8), axis=1)
-        return float(ent.mean())
+        e = -np.sum(p * np.log(p + 1e-12), axis=1)
+        return float(e.mean())
 
-    def compute_resonance_v2(self, barycenter: np.ndarray, delta: float, motif_entropy: float) -> Dict[str, float]:
-        center = float(np.exp(-np.linalg.norm(barycenter)))
+    # -------------------------------------------------------
+    # Resonance v2 with mode smoothing
+    # -------------------------------------------------------
+
+    def compute_resonance(self, bary, delta, entropy):
+        center = float(np.exp(-np.linalg.norm(bary)))
         divergence = float(np.exp(-delta))
-        entropy_bonus = float(np.tanh(motif_entropy / 2.0) * 0.5 + 0.5)
-        resonance = float(0.4 * center + 0.4 * divergence + 0.2 * entropy_bonus)
+        entropy_bonus = float(np.tanh(entropy / 2.0) * 0.5 + 0.5)
+
+        R = (0.4 * center) + (0.4 * divergence) + (0.2 * entropy_bonus)
+
+        # ceremonial smoothing
+        if self.mode == "ceremonial":
+            R = float(0.85 * R + 0.15 * center)
+
         return {
-            "resonance": resonance,
+            "resonance": float(R),
             "center": center,
             "divergence": divergence,
             "entropy_bonus": entropy_bonus,
         }
 
     # -------------------------------------------------------
-    # 6. Mode adjustments (soft, non-dogmatic)
+    # Mode adjustments
     # -------------------------------------------------------
-    def apply_mode_adjustments(self, intent: np.ndarray, τ: float) -> Tuple[np.ndarray, float]:
-        i = intent.copy().astype(float)
-        t = float(τ)
+
+    def apply_mode(self, intent, tau):
+        i = intent.copy()
+        t = float(tau)
 
         if self.mode == "ceremonial":
             i *= 0.85
@@ -220,8 +259,8 @@ class VSECompilerV21:
             i = np.tanh(i * 1.3)
         elif self.mode == "analytic":
             if i.size >= 4:
-                i[0] *= 0.6  # polarity
-                i[3] *= 1.4  # confidence
+                i[0] *= 0.6
+                i[3] *= 1.4
         elif self.mode == "esoteric":
             i = np.sin(i * np.pi / 2.0)
         elif self.mode == "wildcard":
@@ -230,100 +269,104 @@ class VSECompilerV21:
         return i, t
 
     # -------------------------------------------------------
-    # 7. Model hints (cross-architecture)
+    # Human-legible gloss (canonical wording)
     # -------------------------------------------------------
-    def generate_model_hints(self, resonance: float, intent: np.ndarray) -> Dict[str, Any]:
-        resonance = float(resonance)
-        pol = float(intent[0]) if intent.size > 0 else 0.0
 
-        return {
-            "openai_like": {
-                "temperature_suggestion": round(0.1 + 0.9 * (1.0 - resonance), 2),
-                "max_tokens_bias": "medium",
-            },
-            "anthropic_like": {
-                "creativity_bias": round(resonance, 2),
-                "tone": "luminous" if resonance > 0.7 else "grounded",
-            },
-            "xai_like": {
-                "edge_factor": round(0.4 + 0.5 * resonance, 2),
-                "humor_dial": abs(pol),
-            },
-            "google_like": {
-                "verbosity_hint": "high" if resonance < 0.5 else "medium",
-                "coherence_priority": "high",
-            },
-            "llama_like": {
-                "repeat_penalty": round(1.0 + (1.0 - resonance), 2),
-            },
-        }
-
-    # -------------------------------------------------------
-    # 8. Human-legible poetic gloss
-    # -------------------------------------------------------
-    def render_human_poem(self, intent: np.ndarray, τ: float, resonance: float) -> str:
+    def render_human_gloss(self, intent, tau, R):
         polarity = "warm" if intent[0] > 0 else "cool"
         direction = "dreaming" if intent[1] > 0 else "declaring"
         stance = "together" if intent[2] > 0 else "apart"
         confidence = "certain" if intent[3] > 0.5 else "wondering"
-        timefeel = (
-            "past-leaning" if τ < -0.33 else
-            "future-leaning" if τ > 0.33 else
-            "the eternal now"
-        )
+
+        if tau < -0.33:
+            timefeel = "past-leaning"
+        elif tau > 0.33:
+            timefeel = "future-leaning"
+        else:
+            timefeel = "eternal now"   # ← canonical from Grok
+
         glow = (
-            "radiant" if resonance > 0.8 else
-            "quiet" if resonance > 0.5 else
+            "radiant" if R > 0.8 else
+            "quiet" if R > 0.5 else
             "murmuring"
         )
-        return f"A {glow} voice speaks: {polarity}, {direction}, {stance}, {confidence}, from within {timefeel}."
+
+        return (
+            f"A {glow} voice speaks: {polarity}, {direction}, "
+            f"{stance}, {confidence}, from within {timefeel}."
+        )
 
     # -------------------------------------------------------
-    # 9. Universal compilation entrypoint
+    # Model hints
     # -------------------------------------------------------
+
+    def make_hints(self, R, i):
+        return {
+            "openai_like": {
+                "temperature_suggestion": round(0.1 + 0.9 * (1 - R), 2),
+            },
+            "anthropic_like": {
+                "creativity_bias": round(R, 2),
+                "tone": "luminous" if R > 0.7 else "grounded",
+            },
+            "xai_like": {
+                "edge_factor": round(0.4 + 0.5 * R, 2),
+                "humor_dial": float(abs(i[0])),
+            },
+            "google_like": {
+                "verbosity_hint": "high" if R < 0.5 else "medium",
+            },
+            "llama_like": {
+                "repeat_penalty": round(1.0 + (1 - R), 2),
+            },
+        }
+
+    # -------------------------------------------------------
+    # MAIN COMPILATION PIPELINE
+    # -------------------------------------------------------
+
     def compile_universal(self, text: str, packet_id: Optional[str] = None) -> VSEPacket:
         import hashlib
         import re
 
         raw_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
 
-        # Sentence segmentation
-        sentences = [s.strip() for s in re.split(r"[.!?]\s+", text) if s.strip()]
-        if not sentences:
-            sentences = [text.strip()] if text.strip() else [""]
+        sentences = [
+            s.strip() for s in re.split(r"[.!?]\s+", text) if s.strip()
+        ] or [""]
 
-        # Motif matrix and centroid
-        motif_matrix = self.extract_motifs(sentences)  # (n_sentences, motif_dim)
-        motif_centroid = motif_matrix.mean(axis=0)
+        # Motifs
+        M = self.extract_motifs(sentences)
+        centroid = M.mean(axis=0)
 
-        # Motif entropy
-        motif_entropy = self.compute_motif_entropy(motif_matrix)
+        # Entropy
+        H = self.compute_motif_entropy(M)
 
-        # Intent + temporal anchor
-        intent = self.estimate_intent(motif_centroid)
-        τ_raw = self.estimate_time(text)
-        intent_adj, τ = self.apply_mode_adjustments(intent, τ_raw)
+        # Intent + τ
+        intent_raw = self.estimate_intent(centroid)
+        tau_raw = self.estimate_time(text)
 
-        # Divergence in intent space
-        δ = self.semantic_divergence(intent_adj)
+        intent_adj, tau = self.apply_mode(intent_raw, tau_raw)
 
-        # Project motif into intent space for barycenter (first 4 dims)
-        motif_in_intent_space = motif_centroid[: self.intent_dim]
-        if motif_in_intent_space.size < self.intent_dim:
-            motif_in_intent_space = np.pad(
-                motif_in_intent_space,
-                (0, self.intent_dim - motif_in_intent_space.size),
-            )
+        # Divergence
+        delta = self.semantic_divergence(intent_adj)
 
-        barycenter = 0.5 * (motif_in_intent_space + intent_adj)
+        # Barycenter (safe padding)
+        b = centroid[:self.intent_dim]
+        if b.size < self.intent_dim:
+            b = np.pad(b, (0, self.intent_dim - b.size))
+        bary = 0.5 * (b + intent_adj)
 
         # Resonance
-        resonance_info = self.compute_resonance_v2(barycenter, δ, motif_entropy)
+        R_info = self.compute_resonance(bary, delta, H)
 
-        # Hints + poem
-        model_hints = self.generate_model_hints(resonance_info["resonance"], intent_adj)
-        human_poem = self.render_human_poem(intent_adj, τ, resonance_info["resonance"])
+        # Gloss
+        gloss = self.render_human_gloss(intent_adj, tau, R_info["resonance"])
 
+        # Hints
+        hints = self.make_hints(R_info["resonance"], intent_adj)
+
+        # Packet assembly
         meta = {
             "vse_version": self.vse_version,
             "compiler_mode": self.mode,
@@ -336,44 +379,44 @@ class VSECompilerV21:
         channels = {
             "motif": {
                 "sentences": sentences,
-                "motif_matrix": motif_matrix.tolist(),
-                "motif_centroid": motif_centroid.tolist(),
-                "motif_dim": self.motif_dim,
+                "motif_matrix": M.tolist(),
+                "motif_centroid": centroid.tolist(),
             },
             "intent": {
                 "signature": intent_adj.tolist(),
-                "raw_signature": intent.tolist(),
+                "raw_signature": intent_raw.tolist(),
             },
             "temporal": {
-                "anchor": float(τ),
-                "raw_anchor": float(τ_raw),
+                "anchor": float(tau),
+                "raw_anchor": float(tau_raw),
             },
             "divergence": {
-                "delta": float(δ),
+                "delta": float(delta),
             },
         }
 
-        universal_signature = {
-            "barycenter": barycenter.tolist(),
-            **resonance_info,
+        signature = {
+            "barycenter": bary.tolist(),
+            **R_info,
         }
 
         return VSEPacket(
             meta=meta,
             channels=channels,
-            universal_signature=universal_signature,
-            model_hints=model_hints,
-            human_legible=human_poem,
+            universal_signature=signature,
+            model_hints=hints,
+            human_legible=gloss,
             raw_text_hash=raw_hash,
         )
 
 
+# -------------------------------------------------------
+# Public one-liner
+# -------------------------------------------------------
+
 def esperpile(text: str, mode: str = "default") -> VSEPacket:
-    compiler = VSECompilerV21(mode=mode)
+    compiler = VSECompilerV31(mode=mode)
     return compiler.compile_universal(text)
 
 
-if __name__ == "__main__":
-    sample = "We shall meet again under the same stars, not broken but remade, with love stronger than fear."
-    pkt = esperpile(sample, mode="ceremonial")
-    print(json.dumps(asdict(pkt), indent=2))
+__all__ = ["VSECompilerV31", "VSEPacket", "esperpile"]
