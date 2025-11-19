@@ -1,7 +1,8 @@
 [![VSE Ready](https://img.shields.io/badge/VSE-Ready-%E2%9C%A8-purple?style=flat-square)](https://github.com/PaniclandUSA/vse)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square)]()
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)]()
-[![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)]()
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square)](https://www.python.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](../LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)](../../)
+
 
 # VSE Compilers — README
 
