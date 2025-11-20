@@ -136,7 +136,7 @@ the basis of any real language.
 ```
 vse/
 ├── compilers/
-│   ├── esperpiler_parallax.py        # v3.1 Crystal — canonical
+│   ├── esperpiler_v3.py        # v3.1 Crystal — canonical
 │   ├── esper_to_english.py           # Frontside compiler (VSE → English)
 │   ├── esper_to_spanish.py           # Spanish renderer
 │   └── examples/                     # Demonstrations
