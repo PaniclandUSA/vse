@@ -58,7 +58,7 @@ the compiler that takes human language and produces a **universal, portable pack
 It listens to the sentence, extracts its gravity, and breathes out its semantic core.
 
 ## Current Production Compiler  
-### **`compilers/esperpiler_parallax.py` — v3.1 “Crystal” (Nov 19, 2025)**  
+### **`compilers/esperpiler_v3.py` — v3.1 “Crystal” (Nov 19, 2025)**  
 This is the canonical Esperpiler.  
 All previous versions are now archival.
 
@@ -141,7 +141,7 @@ vse/
 │   ├── esper_to_spanish.py           # Spanish renderer
 │   └── examples/                     # Demonstrations
 │
-├── volumes/                          # The Holy Texts of VSE (I–VI)
+├── volumes/                          # The Developer Texts of VSE (I–VI)
 │   ├── Volume_I.pdf                  # Intent & Motif Foundations
 │   ├── Volume_II.pdf                 # Developer Guide
 │   ├── Volume_III.pdf                # Motif Geometry
