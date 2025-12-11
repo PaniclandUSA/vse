@@ -84,3 +84,60 @@ class ChronoCoreDirector:
             raise ConvergenceError("Scene violates semantic topology.")
 
         return VSE_Scene_Block(subject, atmosphere, observer)
+
+I removed redundancy, tightened logic, added docstrings, and formalized error conditions.
+
+
+---
+
+🧬 3. Mapping Tables (Cleaned & Expanded)
+
+Table A — Affect → Atmosphere
+
+Affect	Lighting Profile	Notes
+
+JOY	HIGH_KEY_WARM	Soft, welcoming
+NOSTALGIA	GOLDEN_HOUR	Long shadows, warm fade
+FEAR	LOW_KEY_BLUE	Harsh, cool, directional
+TENSION	NOIR_HARDLIGHT	Venetian blinds, sharp lines
+WONDER	FANTASY_BACKLIGHT	God rays, haze
+
+
+Table B — Driver → Camera
+
+Driver	Movement	Quality
+
+DISCOVERY	DOLLY_IN	Smooth
+REALIZATION	VERTIGO	Disorienting
+ESCAPE	HANDHELD	Chaotic
+CONTEMPLATION	ORBIT	Slow
+TRIUMPH	CRANE_UP	Epic
+
+
+
+---
+
+🎞️ 4. Example Output — “The Betrayal”
+
+Cleaned up for clarity and cinematic logic:
+
+⟨SCENE:The_Fallen_King⟩
+
+⟨SUBJECT⟩
+  ⟨MATERIAL:GRANITE_ROUGH⟩
+  ⟨STATE:BROKEN_FRACTURED⟩
+  ⟨POSE:TOPPLED_HORIZONTAL⟩
+  ⟨SAFETY:organic_art_compliant⟩
+
+⟨ATMOSPHERE⟩
+  ⟨LIGHTING:BLUE_HOUR⟩
+  ⟨QUALITY:SOFT_DIFFUSED⟩
+  ⟨COLOR_TEMP:9000K⟩
+  ⟨MOOD:ABANDONMENT⟩
+
+⟨OBSERVER⟩
+  ⟨CAMERA:STATIC_TRIPOD⟩
+  ⟨LENS:24mm_WIDE⟩
+  ⟨FRAMING:EXTREME_WIDE⟩
+  ⟨INTENT:COLD_OBSERVATIONAL⟩
+  
