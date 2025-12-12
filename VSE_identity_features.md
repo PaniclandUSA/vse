@@ -1,247 +1,267 @@
-##⭐ VSE::IDENTITY_FEATURES v2.3 — Ontology Expansion + Preset System
+⭐ VSE::IDENTITY_FEATURES v2.3 — Ontology Expansion + Preset System
 
-This is now the OFFICIAL, canonical version ready for Vox, Claude, Grok, Gemini, and all renderer pipelines.
+Official canonical version for Vox, Claude, Grok, Gemini, and all renderer pipelines.
 
+This module defines how identity-linked human features behave under VSE material transformation:
+tattoos, scars, freckles, moles, pigmentation, and anatomical microdetails.
 
----
+Includes:
 
-**A. MATERIAL BEHAVIOR VOCABULARY
+Complete material behavior vocabulary
 
-(Full formalized palette)**
+Complete microstructure vocabulary
 
-<!-- Material Behavioral Vocabulary -->
-material_behavior = [
-  opaque,           # no light penetration
-  translucent,      # diffuses light through volume
-  transparent,      # clear, glass-like
-  reflective,       # mirror-like, high specular
-  iridescent,       # color-shifting, opal-like
-  luminous,         # emits soft light
-  matte,            # non-reflective, diffuse only
-  glossy,           # smooth high-specular sheen
-  metallic          # conductive metallic reflectance
-]
+Crystallization metal-fill expansion
+
+Preset system for user-facing simplicity
+
+Fully modular parameter sets for all AI renderers
+
 
 
 ---
 
-**B. MICROSTRUCTURE VOCABULARY
 
-(Full structural ontology)**
+---
 
-<!-- Microstructure Options -->
-microstructure = [
-  smooth,           # uniform, featureless surface
-  cloudy,           # soft density variations
-  layered,          # stratified bands (opal, agate)
-  crystalline,      # faceted or geometric grain
-  fibrous,          # threadlike internal patterns
-  granular,         # grain-like mineral clusters
-  veined,           # marble-style linework
-  fractured         # fine break-lines or stress textures
-]
+## A. MATERIAL BEHAVIOR VOCABULARY
 
-ALL of these can now be attached to any identity-feature transformation.
+Full formalized palette
+
+Behavior	Description
+
+opaque	no light penetration
+translucent	diffuses / scatters incoming light
+transparent	clear, glass-like transmission
+reflective	mirror-like, high specular reflection
+iridescent	color-shifting, opal-like interference
+luminous	emits soft internal glow
+matte	low-reflective, diffuse scattering
+glossy	smooth, high-specular sheen
+metallic	conductive metallic reflectance
+
 
 
 ---
 
-**C. METAL FILL OPTIONS FOR SCARS
+## B. MICROSTRUCTURE VOCABULARY
 
-(Full kintsugi-compatible metal palette)**
+Defines internal material microforms
 
-⟨if fate="crystallized"⟩
-  material_identity = opal
-  material_behavior = iridescent
-  microstructure = layered
-  glow_amount = 0.25
-  crack_intensity = 0.3
-  
-  metal_fill = [gold | silver | bronze | platinum | copper | none]
-  
-  aesthetic_mode = kintsugi
-⟨/if⟩
+Microstructure	Description
 
-Why this matters:
+smooth	uniform material density
+cloudy	fog-like diffusion patterns
+layered	stacked mineral or opal-like sheets
+crystalline	structured facets and refractive nodes
+fibrous	thread-like internal patterns
+granular	small particulates, mineral clusters
+veined	linear contrast veins
+fractured	crack-like internal disruptions
 
-gold → divine, ceremonial
-
-silver → cold purity
-
-bronze → ancient armor aesthetic
-
-platinum → ultra-luxury, mirror-white refraction
-
-copper → warm rustic oxidation potential
-
-none → pure crystalline scars, no metallic fill
-
-
-This is artistically and narratively accurate.
 
 
 ---
 
-D. PRESET SYSTEM (NEW)
 
-This is a MASSIVE usability upgrade.
+---
 
-Users can now invoke entire styles without manually specifying 15–30 lines.
+## C. IDENTITY FEATURE TYPES
+
+All identity features have independent fate controls.
 
 
 ---
 
-⭐ Preset Architecture
+1. Tattoos
 
-⟨VSE::MATERIAL_BEHAVIOR 
-    scope="identity_features" 
-    preset="preset_name"⟩
+<feature type="tattoos">
+  fate = [ etched_relief | inked_subsurface | omitted ]
+</feature>
 
-  ⟨override feature="tattoos"⟩
-      ...optional adjustments...
-  ⟨/override⟩
+Etched Relief Mode
 
-⟨/VSE::MATERIAL_BEHAVIOR⟩
+depth_mm: 0.05–2.0               // shallow to deep carving
+edge_definition: 0.0–1.0          // soft → sharp
+fill_behavior: [ none | shadow | gold_inlay | pigment_inlay ]
+weathering: 0.0–1.0               // pristine → ancient
+surface_continuity: [ smooth | textured | fractured ]
 
+Inked Subsurface Mode
 
----
+ink_depth_mm: 0.5–3.0
+clarity: 0.0–1.0                   // obscured → fully visible
+diffusion: [ none | subtle | moderate | heavy ]
+color_shift: [ neutral | warm | cool | desaturated | monochrome ]
+interact_with_translucency: true/false
+interact_with_veining: [ none | partial | full ]
+gloss_interference: 0.0–1.0        // reflection masking strength
 
-⭐ PRESET LIBRARY v1.0
+Omitted Mode
 
-(I built four presets to demonstrate the power.)
-
-
----
-
-1. ancient_relic
-
-Weathered, eroded, archaeological.
-
-preset="ancient_relic"
-
-tattoos → etched_relief  
-  depth_mm = 0.8  
-  edge_crispness = 0.3  
-  weathering = 0.7  
-  fill = shadow  
-
-pigmented_marks → converted  
-  become = mineral_inclusion  
-  microstructure = granular  
-
-scars → deepened  
-  depth_multiplier = 1.4  
-  edge_style = fractured  
-
-tone_variation → marble_variation  
-  sun_memory = true
+removal_completeness: 0.0–1.0
+surface_memory: true/false         // faint topology ghost
 
 
 ---
 
-2. kintsugi_divine
+2. Pigmented Marks (Freckles, Moles, Birthmarks)
 
-Gold inlay + spiritual glow.
+<feature type="pigmented_marks">
+  fate = [ preserved | omitted | converted_to_material_flaws ]
+</feature>
 
-preset="kintsugi_divine"
+Preserved Mode
 
-tattoos → gold_inlay  
-  inlay_thickness_mm = 0.6  
-  glow_amount = 0.7  
-  crack_intensity = 0.4  
+render_as: [ subsurface_impurity | surface_spot | raised_inclusion ]
+size_scaling: 0.5–2.0
+color_inheritance: [ full | partial | none ]
 
-scars → crystallized  
-  metal_fill = gold  
-  glow_amount = 0.5  
+Converted to Material Flaws
 
-pigmented_marks → preserved  
-  render = raised_inclusion  
-
-tone_variation → unified
+become: [ mineral_inclusion | vein_node | crystalline_flaw | air_pocket ]
+distribution: match_original
 
 
 ---
 
-3. ghost_memory
+3. Scars
 
-Barely-there subsurface hints.
+<feature type="scars">
+  fate = [ deepened | smoothed | omitted | crystallized ]
+</feature>
 
-preset="ghost_memory"
+Deepened Mode
 
-tattoos → inked_subsurface  
-  clarity = 0.2  
-  diffusion = subtle  
-  gloss_occlusion = 0.6  
+depth_multiplier: 1.0–3.0
+edge_character: [ rough | clean | fractured ]
 
-pigmented_marks → omitted  
-  memory_trace = true  
+Crystallized Mode
 
-scars → smoothed  
-
-tone_variation → unified
-
-
----
-
-4. modern_minimal
-
-Clean, sleek, contemporary sculpture.
-
-preset="modern_minimal"
-
-tattoos → omitted  
-pigmented_marks → omitted  
-scars → omitted  
-tone_variation → unified
+material_identity: opal
+material_behavior: iridescent
+microstructure: layered
+glow_amount: 0.0–1.0
+crack_intensity: 0.0–1.0
+metal_fill: [ gold | silver | bronze | platinum | none ]
+aesthetic_mode: kintsugi
 
 
 ---
 
-⭐ **NOW THE FULL UPGRADED MODULE:
+4. Skin Tone Variations
 
-VSE::IDENTITY_FEATURES v2.3 (Final)**
+<feature type="natural_discoloration">
+  fate = [ preserved_as_marble_variation | unified_to_base_material | omitted ]
+</feature>
 
-Here is the complete system including A–D:
+Optional Behaviors
 
-⟨VSE::MATERIAL_BEHAVIOR scope="identity_features"⟩
+sun_exposure_memory: true/false       // tan becomes denser regions
+vein_color_inheritance: true/false
 
-  <!-- Material Behavior Vocabulary -->
-  material_behavior = [
-    opaque, translucent, transparent,
-    reflective, iridescent, luminous,
-    matte, glossy, metallic
-  ]
 
-  <!-- Microstructure Vocabulary -->
-  microstructure = [
-    smooth, cloudy, layered, crystalline,
-    fibrous, granular, veined, fractured
-  ]
+---
 
-  <!-- TATTOOS -->
-  ⟨feature type="tattoos"⟩
-    fate = [etched_relief | inked_subsurface | gold_inlay | omitted]
-    ...
-  ⟨/feature⟩
 
-  <!-- PIGMENTED MARKS -->
-  ⟨feature type="pigmented_marks"⟩
-    fate = [preserved | omitted | converted]
-    ...
-  ⟨/feature⟩
+---
 
-  <!-- SCARS -->
-  ⟨feature type="scars"⟩
-    fate = [deepened | smoothed | omitted | crystallized]
-    metal_fill = [gold | silver | bronze | platinum | copper | none]
-    ...
-  ⟨/feature⟩
+## D. PRESET SYSTEM (New in v2.3)
 
-  <!-- SKIN TONE MEMORY -->
-  ⟨feature type="tone_variation"⟩
-    fate = [marble_variation | unified | omitted]
-    sun_memory = true
-    vein_inheritance = partial
-  ⟨/feature⟩
+Presets dramatically simplify user-facing control.
 
-⟨/VSE::MATERIAL_BEHAVIOR⟩
+
+---
+
+Example Presets
+
+
+---
+
+⭐ preset="ancient_relic"
+
+Feature	Behavior
+
+Tattoos	etched_relief (weathered)
+Pigmented Marks	converted to mineral flaws
+Scars	deepened, fractured edges
+Discoloration	preserved_as_marble_variation
+
+
+Usage:
+
+<VSE::MATERIAL_BEHAVIOR scope="identity_features" preset="ancient_relic"/>
+
+
+---
+
+⭐ preset="kintsugi_divine"
+
+Feature	Behavior
+
+Tattoos	gold-filled etched relief
+Scars	crystallized opal, gold veins
+Pigmented Marks	subsurface impurities
+Discoloration	unified to base material
+
+
+Usage:
+
+<VSE::MATERIAL_BEHAVIOR scope="identity_features" preset="kintsugi_divine"/>
+
+
+---
+
+⭐ preset="ghost_memory"
+
+Feature	Behavior
+
+Tattoos	omitted, faint surface_memory
+Pigmented Marks	omitted
+Scars	smoothed
+Discoloration	omitted
+
+
+Usage:
+
+<VSE::MATERIAL_BEHAVIOR scope="identity_features" preset="ghost_memory"/>
+
+
+---
+
+
+---
+
+## E. INLINE OVERRIDE SYSTEM
+
+Presets can be adjusted without rewriting full feature blocks.
+
+<VSE::MATERIAL_BEHAVIOR scope="identity_features" preset="kintsugi_divine">
+  <override feature="tattoos">
+    glow_amount = 0.9
+    depth_mm = 1.2
+  </override>
+</VSE::MATERIAL_BEHAVIOR>
+
+
+---
+
+## F. FULL EXAMPLE IMPLEMENTATION
+
+<VSE::material_transform>
+  <material
+    base="white_opal_marble"
+    translucency="0.42"
+    veining="warm_gold"
+  />
+
+  <VSE::MATERIAL_BEHAVIOR scope="identity_features" preset="ancient_relic">
+    
+    <override feature="scars">
+      fate = crystallized
+      glow_amount = 0.55
+      metal_fill = gold
+    </override>
+
+  </VSE::MATERIAL_BEHAVIOR>
+</VSE::material_transform>
