@@ -1,3 +1,4 @@
+,,,
 ⟨VSE::MATERIAL_BEHAVIOR scope="identity_features"⟩
 
   <!-- ========================= -->
@@ -95,3 +96,4 @@
   ⟨/feature⟩
 
 ⟨/VSE::MATERIAL_BEHAVIOR⟩
+,,,
