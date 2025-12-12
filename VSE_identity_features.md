@@ -234,3 +234,38 @@ Override any preset field inline.
 
   </VSE::MATERIAL_BEHAVIOR>
 </VSE::material_transform>
+
+## Eyes (Delegated Behavior)
+
+Eye rendering is governed by the standalone module:
+
+→ **[VSE_eye_behavior.md](./VSE_eye_behavior.md)**
+
+### Integration Rule
+
+Any identity transformation involving eyes MUST declare an `eye_fate` from the eye behavior module.
+
+**Correct usage:**
+```xml
+⟨VSE::MATERIAL_BEHAVIOR scope="identity_features"⟩
+  ⟨use module="VSE::EYE_BEHAVIOR"⟩
+    eye_fate = chiseled_illusion
+    iris_depth_mm = 0.6
+  ⟨/use⟩
+  
+  ⟨feature type="tattoos"⟩
+    fate = etched_relief
+    depth_mm = 0.4
+  ⟨/feature⟩
+⟨/VSE::MATERIAL_BEHAVIOR⟩
+Why eyes are not embedded here:
+Eyes are a cross-cutting semantic fault line
+They intersect material logic, perception logic, and training bias
+They require prohibition system to override biological defaults
+See eye behavior module for full specification
+Default Behavior Warning
+If eye_fate is omitted during material transformation, renderers MUST NOT assume biological defaults. This will cause "wet eye regression" (semantic collision between sculptural body and living eyes).
+Failure mode example:
+marble body + (implicit biological eyes) = semantic collision
+Correct approach:
+marble body + eye_fate=blank_orb = consistent sculptural logic
