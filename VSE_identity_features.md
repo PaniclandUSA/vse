@@ -1,4 +1,4 @@
-⭐ VSE::IDENTITY_FEATURES v2.3 — Ontology Expansion + Preset System
+##⭐ VSE::IDENTITY_FEATURES v2.3 — Ontology Expansion + Preset System
 
 This is now the OFFICIAL, canonical version ready for Vox, Claude, Grok, Gemini, and all renderer pipelines.
 
