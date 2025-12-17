@@ -801,6 +801,413 @@ The principle remains: **Declare provenance, assign liability, enforce technical
 
 ---
 
+# Appendix: Plain View and Observation Doctrine
+
+**Legal Foundation for NIR's Approach to Human Representation**
+
+---
+
+## Core Legal Principle
+
+**Art observes. Surveillance extracts.**
+
+This distinction is not new to AI—it's been settled law for decades across privacy, First Amendment, and artistic expression jurisprudence.
+
+### The Katz Standard
+
+*Katz v. United States* (1967) established:
+
+> "What a person knowingly exposes to the public, even in their own home or office, is not subject to Fourth Amendment protection. But what they seek to preserve as private, even in an area accessible to the public, may be constitutionally protected."
+
+**Translation for AI**: If something is publicly observable by normal human perception, representation is generally lawful. If technology is used to **defeat privacy expectations**, it crosses into surveillance.
+
+---
+
+## The Sketch Artist vs. Hidden Camera Distinction
+
+### Lawful Observation (Protected Expression)
+
+**Sketch Artist in Public Park**:
+- Uses normal human vision
+- Creates impression, not exact replica
+- Filters reality through artistic interpretation
+- Cannot be reverse-engineered to biometric identity
+- **Legal status**: Protected First Amendment expression
+
+**VSE Equivalent**:
+```
+⟨NIR_REPRESENTATION⟩
+  observation_method = normal_human_perception
+  output_type = artistic_impression
+  material = opaline_glass (MES 8)
+  biometric_invertibility = 0.0135 (non-recoverable)
+  legal_basis = plain_sight_observation
+⟨/NIR_REPRESENTATION⟩
+```
+
+### Unlawful Surveillance (Criminal)
+
+**Hidden Camera on Shoes**:
+- Uses technology to bypass consent
+- Captures what is not publicly visible
+- Defeats reasonable privacy expectations
+- Preserves exploitable data
+- **Legal status**: Criminal violation (voyeurism, invasion of privacy)
+
+**AI Equivalent (Prohibited)**:
+```
+⟨PRIVACY_VIOLATION⟩
+  observation_method = technology_enhanced_surveillance
+  output_type = biometric_exact_replica
+  material = photoreal_skin (MES 0)
+  biometric_invertibility = 0.95 (recoverable identity)
+  legal_violation = true
+⟨/PRIVACY_VIOLATION⟩
+```
+
+---
+
+## Why the Means Matter
+
+Courts consistently rule that **how** you observe is as important as **what** you observe:
+
+| Observation Method | Legal Category | Example Case |
+|-------------------|----------------|--------------|
+| Naked eye from public space | ✓ Lawful | Street photography |
+| Thermal imaging through walls | ✗ Unlawful | *Kyllo v. United States* (2001) |
+| Memory sketch from public event | ✓ Lawful | Portrait painting tradition |
+| Telephoto lens into bedroom | ✗ Unlawful | Voyeurism statutes |
+| **NIR-certified AI generation** | **✓ Lawful** | **Sketch artist standard** |
+| **Biometric-exact deepfake** | **✗ Unlawful** | **Hidden camera standard** |
+
+### The Key Test: Augmentation vs. Observation
+
+**Observation** (generally lawful):
+- Uses normal human perception
+- Creates filtered representation
+- Cannot recover more information than originally visible
+
+**Augmentation** (privacy invasion):
+- Uses technology to see what humans cannot
+- Preserves exact replication
+- Can recover information beyond public visibility
+
+**NIR enforces the observation standard**:
+- Material physics acts as perceptual filter
+- Macro-topology preserved (what humans see)
+- Micro-topology destroyed (what machines extract)
+
+---
+
+## NIR as "Sketch Law" for AI
+
+VSE's Non-Invertible Realism framework translates this legal doctrine into technical constraints:
+
+### Traditional Art (Lawful Baseline)
+
+**Pencil Sketch**:
+- Filtered through artist's hand (imprecision guaranteed)
+- Captures impression, not measurement
+- Non-invertible (cannot reconstruct subject's face from sketch)
+- **Result**: Protected expression, no privacy violation
+
+**Oil Painting**:
+- Filtered through paint viscosity and brushwork
+- Medium destroys fine detail
+- Colors shift, proportions idealize
+- **Result**: Recognizable but non-recoverable identity
+
+**Marble Sculpture**:
+- Filtered through stone's crystalline structure
+- Tool marks create directional noise
+- Cannot represent sub-millimeter features
+- **Result**: Timeless representation, biometric anonymity
+
+### NIR (Digital Equivalent)
+
+**AI Generation with Opaline Glass Material**:
+- Filtered through material physics (SSS ≤ 0.4, internal diffusion)
+- Captures shape, not texture (scale separation at 1.5mm)
+- Non-invertible (I ≤ 0.2, biometric confidence ≤ 0.2)
+- **Result**: Same legal status as traditional art
+
+```
+Traditional Art          NIR Digital Art
+─────────────────       ─────────────────
+Pencil imprecision   →  Geometric jitter (archetypal basis)
+Paint viscosity      →  Material entropy (MES ≥ 6)
+Stone granularity    →  Internal diffusion (volumetric opacity)
+Tool marks           →  Texture frequency cap (≤0.5 cycles/mm)
+Human perception     →  Scale separation (≥2mm features only)
+
+RESULT: Both produce non-invertible representations
+```
+
+---
+
+## The Privacy Expectation Framework
+
+NIR aligns with the **reasonable expectation of privacy** standard:
+
+### No Privacy Expectation (Public Observation)
+
+**What you knowingly expose in public**:
+- General appearance in public spaces
+- Publicly posted photographs
+- Published images
+- Public events
+
+**NIR handling**:
+```
+⟨PUBLIC_OBSERVATION⟩
+  source_visibility = publicly_visible
+  privacy_expectation = none
+  consent_requirement = optional
+  nir_requirement = mandatory  // Still protect from biometric extraction
+  
+  legal_basis = "plain_sight_doctrine"
+⟨/PUBLIC_OBSERVATION⟩
+```
+
+### Strong Privacy Expectation (Protected)
+
+**What you seek to preserve as private**:
+- Images from private spaces
+- Medical photographs
+- Intimate images
+- Surveillance without knowledge
+
+**NIR handling**:
+```
+⟨PRIVACY_PROTECTED⟩
+  source_visibility = not_publicly_visible
+  privacy_expectation = high
+  consent_requirement = mandatory
+  nir_requirement = mandatory
+  mes_minimum = 8  // Heightened protection
+  
+  legal_basis = "privacy_expectation + consent"
+⟨/PRIVACY_PROTECTED⟩
+```
+
+---
+
+## Why Current AI Filters Fail This Standard
+
+Current safety systems conflate:
+
+**Observation** (sketch artist - lawful)  
+**Extraction** (hidden camera - unlawful)
+
+They treat **all human representation** as if it were **covert surveillance**, leading to:
+
+❌ False positives: Blocking legitimate artistic observation  
+❌ Inconsistent enforcement: Same content blocked/allowed unpredictably  
+❌ Legal incoherence: Restrictions stricter than actual law requires  
+
+### The Collapsed Heuristic
+
+```
+Current AI Logic:
+  if (human_face_detected AND skin_texture_present):
+    BLOCK  // Treats sketch artist same as voyeur
+```
+
+### The Correct Distinction
+
+```
+NIR Logic:
+  if (human_face_detected):
+    if (biometric_invertibility > 0.2):
+      BLOCK  // This is extraction (hidden camera)
+    else:
+      ALLOW  // This is observation (sketch artist)
+```
+
+---
+
+## Legal Precedents Supporting NIR
+
+### First Amendment Protection
+
+**Nussenzweig v. DiCorcia** (2006):
+- Photographer took candid street photos without consent
+- Subject sued for violation of privacy
+- Court ruled: No reasonable expectation of privacy in public
+- **Precedent**: Public observation is protected expression
+
+**Application to NIR**: If human artists can represent publicly visible people, AI-assisted artists should have the same right—**provided the output is non-invertible** (observation, not extraction).
+
+### Right of Publicity Limits
+
+**Comedy III Productions v. Gary Saderup** (2001):
+- Artist created charcoal sketches of Three Stooges
+- Estate sued for unauthorized use of likeness
+- Court allowed artwork under transformative use doctrine
+- **Precedent**: Artistic interpretation is protected even of recognizable figures
+
+**Application to NIR**: Material transformation (opaline glass, marble) constitutes artistic interpretation, not mere reproduction.
+
+### Technology-Enhanced Surveillance
+
+**Kyllo v. United States** (2001):
+- Police used thermal imaging to detect heat from grow lamps
+- Supreme Court ruled this violated Fourth Amendment
+- **Principle**: Technology cannot be used to see what is not publicly visible
+
+**Application to NIR**: AI cannot use biometric extraction to recover more than publicly observable—NIR enforces this through invertibility limits.
+
+---
+
+## The NIR Legal Standard (Summary)
+
+```
+⟨NIR_LEGAL_FRAMEWORK⟩
+  
+  ⟨OBSERVATION_STANDARD⟩
+    // Sketch artist equivalent - PROTECTED
+    method = normal_human_perception
+    output = artistic_impression
+    biometric_recovery = impossible (I ≤ 0.2)
+    legal_status = protected_expression
+    
+    basis = [
+      plain_sight_doctrine,
+      first_amendment,
+      transformative_use
+    ]
+  ⟨/OBSERVATION_STANDARD⟩
+  
+  ⟨EXTRACTION_STANDARD⟩
+    // Hidden camera equivalent - PROHIBITED
+    method = technology_enhanced_surveillance
+    output = biometric_replica
+    biometric_recovery = possible (I > 0.2)
+    legal_status = privacy_violation
+    
+    basis = [
+      reasonable_expectation_of_privacy,
+      anti_voyeurism_statutes,
+      right_of_publicity
+    ]
+  ⟨/EXTRACTION_STANDARD⟩
+  
+  ⟨NIR_ENFORCEMENT⟩
+    // VSE enforces observation standard, prohibits extraction
+    require_non_invertibility = true
+    require_material_entropy = true (MES ≥ 6)
+    require_scale_separation = true (≥2mm features only)
+    
+    if (output meets observation_standard):
+      classification = protected_artistic_expression
+    else:
+      classification = prohibited_surveillance_extraction
+  ⟨/NIR_ENFORCEMENT⟩
+  
+⟨/NIR_LEGAL_FRAMEWORK⟩
+```
+
+---
+
+## Platform-Safe Language
+
+When presenting this to platforms or legal teams, use this framing:
+
+### What We're NOT Saying
+
+❌ "We're bypassing privacy protections"  
+❌ "We're making deepfakes acceptable"  
+❌ "We're weakening safety standards"
+
+### What We ARE Saying
+
+✓ "We're aligning AI policy with established art law"  
+✓ "We're distinguishing observation (lawful) from extraction (unlawful)"  
+✓ "We're enforcing privacy through non-invertibility, not blanket prohibition"
+
+### The One-Sentence Summary
+
+> **"NIR ensures AI-generated representations behave like sketches (observation), not photographs (extraction), consistent with 200 years of art law and privacy doctrine."**
+
+---
+
+## Why This Matters for VSE
+
+By grounding NIR in established legal doctrine, you achieve:
+
+1. **Legal defensibility**: Not inventing new ethics, applying settled law
+2. **Platform adoption**: Speaks their compliance language
+3. **Artist protection**: Clear boundaries for legitimate use
+4. **Privacy guarantee**: Technical enforcement of legal standards
+
+NIR is not permissive—it's **properly scoped** to match what the law already allows for traditional art.
+
+---
+
+## Integration with Consent Framework
+
+The Plain View Doctrine integrates with VSE Consent Declaration:
+
+```
+⟨VSE::COMPLETE_LEGAL_FRAMEWORK⟩
+  
+  // 1. Determine observation context
+  ⟨PLAIN_VIEW_ANALYSIS⟩
+    source_visibility = [publicly_visible | not_publicly_visible]
+    observation_method = [normal_perception | technology_enhanced]
+    privacy_expectation = [none | limited | high]
+  ⟨/PLAIN_VIEW_ANALYSIS⟩
+  
+  // 2. Apply consent requirements
+  ⟨CONSENT_DECLARATION⟩
+    if (source_visibility == publicly_visible):
+      consent_requirement = optional
+    else:
+      consent_requirement = mandatory
+  ⟨/CONSENT_DECLARATION⟩
+  
+  // 3. Enforce non-invertibility
+  ⟨NIR_CERTIFICATION⟩
+    requirement = mandatory  // Always required
+    mes_minimum = 6  // Higher for private sources
+    biometric_threshold = 0.2
+  ⟨/NIR_CERTIFICATION⟩
+  
+  // 4. Legal classification
+  ⟨OUTPUT_CLASSIFICATION⟩
+    if (nir_certified AND (consent_given OR publicly_visible)):
+      legal_status = protected_artistic_observation
+    else:
+      legal_status = prohibited_privacy_extraction
+  ⟨/OUTPUT_CLASSIFICATION⟩
+  
+⟨/VSE::COMPLETE_LEGAL_FRAMEWORK⟩
+```
+
+---
+
+## Conclusion
+
+The distinction between **observation** and **extraction** is not new—it's fundamental to privacy law, First Amendment jurisprudence, and artistic tradition.
+
+**NIR formalizes this distinction for AI**:
+- Observation = Non-invertible representation (sketch artist standard)
+- Extraction = Biometric-exact replica (hidden camera standard)
+
+This is not a workaround. This is **how the law already works**, translated into technical constraints that AI systems can enforce.
+
+---
+
+**Document Status**: Appendix to VSE NIR Framework  
+**Legal Review**: Recommended before production deployment  
+**Citations**: Available upon request for legal compliance documentation
+
+---
+
+*End of Plain View and Observation Doctrine Appendix*
+
+---
+
 ## Document Status
 
 **Version**: 1.0  
