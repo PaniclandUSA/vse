@@ -106,6 +106,239 @@ Systems should **not** attempt:
 
 ---
 
+## Separating Consent from Copyright
+
+**Critical Distinction**: Consent to depict a person is legally separate from copyright ownership of source materials.
+
+### Two Independent Rights
+
+| Right | Question | Required For |
+|-------|----------|--------------|
+| **Consent/Privacy** | May I depict this *person*? | All human representations |
+| **Copyright** | May I use this *image*? | All copyrighted sources |
+
+**Both must be independently cleared.**
+
+Example: You may have your spouse's consent to create their portrait (consent ✓), but if you're using a professional photographer's image as reference, the photographer owns copyright (copyright ⚠️).
+
+---
+
+## Copyright Provenance Declaration
+
+### VSE Syntax
+⟨VSE::COPYRIGHT_PROVENANCE⟩
+copyright_status = [
+original_work,      // I created the source material
+licensed,           // I have explicit license for derivative works
+public_domain,      // No copyright restrictions
+fair_use_asserted   // Claiming transformative use
+]
+⟨OWNERSHIP_DECLARATION⟩
+if (copyright_status == original_work):
+copyright_holder = declarant
+creation_date = [ISO 8601 timestamp]
+if (copyright_status == licensed):
+  copyright_holder = third_party
+  license_type = [personal | commercial_derivative | educational]
+  license_reference_id = [identifier]
+  license_verification_url = [url]
+  
+if (copyright_status == public_domain):
+  public_domain_basis = [pre_1928 | us_government | cc0 | expired_copyright]
+  source_citation = [description]
+  
+if (copyright_status == fair_use_asserted):
+  ⟨FAIR_USE_ANALYSIS⟩
+    transformation_type = [
+      material_physics,      // NIR material vs. photo
+      medium_change,         // 3D vs. 2D, sculpture vs. image
+      purpose_change         // memorial, educational, commentary
+    ]
+    
+    commercial_use = [true | false]
+    
+    // NIR-specific evidence of transformation
+    nir_certified = true
+    mes_rating = [6-10]
+    market_substitution = impossible
+    biometric_invertibility = [I score ≤ 0.2]
+    
+    fair_use_confidence = [high | medium | low]
+    legal_review = [attorney_reviewed | self_assessed]
+    
+    justification = "Brief explanation of why this qualifies as fair use"
+  ⟨/FAIR_USE_ANALYSIS⟩
+⟨/OWNERSHIP_DECLARATION⟩
+⟨/VSE::COPYRIGHT_PROVENANCE⟩
+### When Copyright is Automatically Cleared
+
+✓ **You created the source material**
+Example: Wedding topper from couple's smartphone photos
+Status: CLEARED (original_work)
+✓ **You have an explicit license**
+Example: Using Adobe Stock image with derivative rights
+Status: CLEARED (licensed)
+Reference: License #123456
+✓ **Source is public domain**
+Example: Family photograph from 1920
+Status: CLEARED (public_domain, basis: pre_1928)
+### When Fair Use Analysis is Required
+
+⚖️ **Using copyrighted material without license**
+
+Fair use is **stronger** when:
+- Purpose is personal, educational, memorial (not commercial)
+- NIR creates substantial material transformation (MES ≥ 6)
+- Original is factual/documentary (portrait) not highly artistic
+- Your work cannot substitute for original's market
+
+Fair use is **weaker** when:
+- Purpose is commercial
+- Original is highly creative/artistic
+- You're using entire composition unchanged
+- Could compete with original's market
+
+**NIR's Role in Fair Use**:
+
+When `copyright_status == fair_use_asserted`, NIR certification provides **measurable evidence** of transformation:
+
+1. **Material transformation**: Photograph → opaline glass (MES 8)
+2. **Medium transformation**: 2D image → 3D sculpture
+3. **Non-substitutability**: I = 0.013 (cannot replace original)
+4. **Different purpose**: Documentation → memorial/artistic object
+
+This transforms fair use from subjective aesthetic claim to **documented technical transformation**.
+
+### Wedding Topper Copyright Analysis
+
+**Case 1: Couple's own photos**
+⟨COPYRIGHT_PROVENANCE⟩
+copyright_status = original_work
+copyright_holder = declarant
+⟨/COPYRIGHT_PROVENANCE⟩
+Result: ✓ FULLY CLEARED
+**Case 2: Professional wedding photographer's images**
+⟨COPYRIGHT_PROVENANCE⟩
+copyright_status = fair_use_asserted
+⟨FAIR_USE_ANALYSIS⟩
+transformation_type = [material_physics, medium_change, purpose_change]
+commercial_use = false
+nir_certified = true
+mes_rating = 8
+market_substitution = impossible
+fair_use_confidence = high
+justification = "Personal memorial use, material transformation to 
+                 opaline glass sculpture, cannot substitute for 
+                 photographer's prints or digital files"
+⟨/FAIR_USE_ANALYSIS⟩
+⟨/COPYRIGHT_PROVENANCE⟩
+Result: ⚖️ FAIR USE ASSERTED
+Strength: HIGH (personal use + NIR transformation + non-competing market)
+Recommendation: Document claim, or request photographer permission
+**Case 3: Friend's candid photo**
+⟨COPYRIGHT_PROVENANCE⟩
+copyright_status = licensed
+license_type = personal
+license_reference_id = "Verbal permission from Sarah, 2025-12-17"
+⟨/COPYRIGHT_PROVENANCE⟩
+Result: ✓ CLEARED (informal license)
+Best practice: Document permission to avoid future disputes
+---
+
+## Complete Clearance Matrix
+⟨VSE::CLEARANCE_STATUS⟩
+⟨COPYRIGHT_CLEARANCE⟩
+status = [
+owned,              // ✓ Declarant owns source
+licensed,           // ✓ Licensed for derivative works
+public_domain,      // ✓ No copyright restrictions
+fair_use_asserted   // ⚖️ Transformative use claimed
+]
+⟨/COPYRIGHT_CLEARANCE⟩
+⟨CONSENT_CLEARANCE⟩
+status = [
+granted,            // ✓ Subject gave consent
+not_required,       // ✓ Public observation / fictional
+self                // ✓ Creator is subject
+]
+⟨/CONSENT_CLEARANCE⟩
+⟨PRIVACY_PROTECTION⟩
+status = [
+nir_certified,      // ✓ Biometric non-invertibility proven (I ≤ 0.2)
+not_applicable      // ✓ Fictional character, no real person
+]
+⟨/PRIVACY_PROTECTION⟩
+⟨FINAL_STATUS⟩
+if (copyright in [owned, licensed, public_domain] AND
+consent in [granted, not_required, self] AND
+privacy == nir_certified):
+legal_status = FULLY_CLEARED ✓
+  certification = "All rights cleared, NIR certified"
+  
+else if (copyright == fair_use_asserted AND
+         consent in [granted, not_required, self] AND
+         privacy == nir_certified):
+  
+  legal_status = FAIR_USE_ASSERTED ⚖️
+  certification = "Fair use claimed with NIR evidence"
+  note = "Declarant accepts copyright liability for transformative use claim"
+  
+else:
+  legal_status = INSUFFICIENT_CLEARANCE ✗
+  required_actions = [list specific missing clearances]
+⟨/FINAL_STATUS⟩
+⟨/VSE::CLEARANCE_STATUS⟩
+---
+
+## Commercial Use Considerations
+
+If you plan to **sell or mass-produce** NIR-generated works:
+
+**Lowest Risk**:
+- Using your own original photographs
+- Using licensed stock imagery with commercial derivative rights
+- Using public domain sources
+- Working with models who have signed commercial releases
+
+**Medium Risk** (Strong fair use claim):
+- Personal commissions using client's family photos
+- Memorial works from deceased relatives' professional portraits
+- Educational/artistic studies with NIR transformation
+- **Key**: NIR certification + non-commercial or limited commercial use
+
+**Higher Risk** (Requires legal review):
+- Mass production based on professional photography without license
+- Commercial products using highly creative/artistic source images
+- Any use where your product could compete with original's market
+
+**NIR's Value**: In all cases, NIR certification strengthens your position by providing documentary evidence of material transformation and market non-substitutability.
+
+---
+
+## Attestation Language (Updated)
+⟨ATTESTATION⟩
+declarant_affirms = true
+liability_accepted = true
+statement = "I affirm that I have:
+(1) Obtained all necessary consents for this representation
+of any depicted person(s), AND
+(2) Either (a) own the copyright to all source materials,
+(b) have appropriate licenses for derivative works, OR
+(c) am asserting fair use in good faith with documented
+transformative factors.
+I understand these are separate legal requirements and accept 
+full responsibility for both declarations."
+⟨/ATTESTATION⟩
+---
+
+## Key Principle
+
+**Consent to depiction ≠ Copyright to source material**
+
+Both must be independently addressed. NIR protects privacy through non-invertibility and strengthens copyright fair use claims through measurable transformation—but it does not replace copyright ownership or licensing requirements.
+
+---
+
 ## The Declarative Consent Model
 
 ### Three-Part Structure
