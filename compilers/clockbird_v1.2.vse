@@ -1,0 +1,50 @@
+# SHOT CARD — v1.2. Every defect the first two renders taught us, closed.
+
+SHOT      CLOCKBIRD_LISTENS_v1.2
+PLATFORM  veo
+DUR       10s <F>              # L4: selecting from the observed set, not choosing
+T_P       0.80
+MODE      SHIFT
+TERMINUS  PCM(A4,M3,E2,S4)
+
+INERT     every element not listed below holds still for the full clip
+
+ELEMENT bird
+  CST     3
+  VIS     3
+  STATE   0.00-0.43  DORMANT
+  STATE   0.43-0.80  HEAD_ORIENT  R40 U8, ease, body inert
+  STATE   0.80-1.00  HOLD
+
+ELEMENT meter
+  CST     3
+  VIS     3                    # L9: staged foreground, warm-lit, sharp
+  STATE   0.00-0.22  ZERO_HOLD  # L10: the vacuum, closed
+  STATE   0.22-0.25  TWITCH_RETURN
+  STATE   0.25-0.40  RISE to 2/3
+  STATE   0.40-1.00  RAISED_HOLD
+
+BUD
+  0.43-0.80  head orient
+  0.22-0.40  needle, two beats
+  0.00-0.80  camera dolly in   # L7: rests at t_p
+
+SAL
+  0.00-0.25  meter
+  0.25-0.43  meter
+  0.43-0.80  bird
+  0.80-1.00  bird
+
+COVERAGE
+  0.00-1.00  meter             # L9: never evicted. it must testify at the end.
+  0.00-1.00  bird
+
+INTENT
+  vigilance: performance, blocking
+
+PROSE
+  Every element in the shot holds absolutely still for the full ten seconds.
+  Exactly three things move. The meter twitches once and returns. The needle
+  rises to two-thirds and rests there. Only then, and because of it, the bird's
+  head alone turns toward the opening. The camera dollies inward and comes to a
+  complete stop at eight seconds. Everything arrives at once and holds.

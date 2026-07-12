@@ -1,0 +1,44 @@
+# SHOT CARD — as authored, before any render.
+# This is the card that produced the first Clockbird clip.
+
+SHOT      CLOCKBIRD_LISTENS_v1.0
+PLATFORM  veo
+DUR       8s <E>
+T_P       0.80
+MODE      SHIFT
+TERMINUS  PCM(A4,M3,E2,S4)
+
+ELEMENT bird
+  CST     3
+  VIS     3
+  LOCKED  SILHOUETTE, MATERIAL
+  REF     NONE
+  STATE   0.00-0.43  DORMANT
+  STATE   0.43-0.80  HEAD_ORIENT
+  STATE   0.80-1.00  HOLD
+
+ELEMENT meter
+  CST     3
+  VIS     1
+  STATE   0.25-0.40  RISE
+  STATE   0.40-1.00  HOLD
+
+BUD
+  0.43-0.80  head orient
+  0.25-0.40  needle rise
+  0.00-1.00  camera dolly in
+
+SAL
+  0.00-0.25  meter
+  0.25-0.43  bird
+  0.43-0.80  bird
+  0.80-1.00  aurora
+
+COVERAGE
+  0.00-0.62  meter
+  0.00-1.00  bird
+  0.00-1.00  aurora
+
+PROSE
+  The bird does not breathe, sway, blink, open its wings, or emit light.
+  No ambient swaying, object drift, material change, or unresolved motion.
